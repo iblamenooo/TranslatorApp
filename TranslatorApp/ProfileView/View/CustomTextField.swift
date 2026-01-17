@@ -8,6 +8,9 @@
 import UIKit
 
 class CustomTextField: UIView {
+    
+    var onTextChange: ((String) -> Void)?
+    
     private let label:UILabel = {
         let label = UILabel()
         label.textColor = .black
@@ -16,11 +19,12 @@ class CustomTextField: UIView {
         return label
     }()
 
-    private let textField:UITextField = {
+    let textField:UITextField = {
         let field = UITextField()
         field.textColor = .systemGray
         field.font = .systemFont(ofSize: 20, weight: .regular)
-        field.placeholder = "Enter your data"
+        field.placeholder = "Your Data"
+        field.textAlignment = .right
         field.translatesAutoresizingMaskIntoConstraints = false
         return field
     }()
@@ -47,6 +51,7 @@ class CustomTextField: UIView {
     func setupUI(){
         stackView.addArrangedSubview(label)
         stackView.addArrangedSubview(textField)
+        textField.addTarget(self, action: #selector(textChanged), for: .editingChanged)
 
         addSubview(stackView)
         
@@ -58,6 +63,9 @@ class CustomTextField: UIView {
             stackView.trailingAnchor.constraint(equalTo: trailingAnchor),
             stackView.bottomAnchor.constraint(equalTo: bottomAnchor)
             ])
-            
+    }
+    
+    @objc private func textChanged() {
+        onTextChange?(textField.text ?? "")
     }
 }

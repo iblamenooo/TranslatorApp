@@ -7,18 +7,18 @@
 
 import UIKit
 
-class ProfilePresenter {
-    weak var input:ProfileViewInput?
-}
-
-
-extension ProfilePresenter:ProfileViewOutput {
+class ProfilePresenter: ProfileViewOutput {
+    weak var input: ProfileViewInput?
+    private let networkService = NetworkService()
     func getRandomImage() {
-        print("2")
-        let person = UIImage(systemName: "person")!
-        input?.updateImage(image: person)
-    }
-    
-    
-    
+            networkService.fetchRandomPhoto { [weak self] imageUrlString in
+                guard let urlString = imageUrlString,
+                      let url = URL(string: urlString),
+                      let data = try? Data(contentsOf: url),
+                      let image = UIImage(data: data) else { return }
+                DispatchQueue.main.async {
+                    self?.input?.updateImage(image: image)
+                }
+            }
+        }
 }
