@@ -7,10 +7,12 @@
 
 import UIKit
 
+protocol CustomTextFieldProtocol: AnyObject {
+    func saveTextForField(text: String, field: String)
+}
+
 class CustomTextField: UIView {
-    
-    var onTextChange: ((String) -> Void)?
-    
+    weak var delegate: CustomTextFieldProtocol?
     private let label:UILabel = {
         let label = UILabel()
         label.textColor = .black
@@ -18,8 +20,8 @@ class CustomTextField: UIView {
         label.translatesAutoresizingMaskIntoConstraints = false
         return label
     }()
-
-    let textField:UITextField = {
+    
+    private let textField:UITextField = {
         let field = UITextField()
         field.textColor = .systemGray
         field.font = .systemFont(ofSize: 20, weight: .regular)
@@ -41,6 +43,7 @@ class CustomTextField: UIView {
         super.init(frame: .zero)
         label.text = fieldType
         textField.placeholder = givenInput
+        textField.delegate = self
         setupUI()
     }
     
@@ -48,11 +51,10 @@ class CustomTextField: UIView {
         fatalError("init(coder:) has not been implemented")
     }
     
-    func setupUI(){
+    private func setupUI(){
         stackView.addArrangedSubview(label)
         stackView.addArrangedSubview(textField)
-        textField.addTarget(self, action: #selector(textChanged), for: .editingChanged)
-
+        
         addSubview(stackView)
         
         translatesAutoresizingMaskIntoConstraints = false
@@ -62,10 +64,22 @@ class CustomTextField: UIView {
             stackView.leadingAnchor.constraint(equalTo: leadingAnchor),
             stackView.trailingAnchor.constraint(equalTo: trailingAnchor),
             stackView.bottomAnchor.constraint(equalTo: bottomAnchor)
-            ])
+        ])
     }
     
-    @objc private func textChanged() {
-        onTextChange?(textField.text ?? "")
+    func setText(text:String) {
+        textField.text = text
+    }
+    
+}
+
+extension CustomTextField:UITextFieldDelegate {
+    func textFieldDidEndEditing(_ textField: UITextField) {
+        delegate?.saveTextForField(text: textField.text ?? "", field: label.text ?? "")
+        
+    }
+    func textFieldShouldReturn(_ textField: UITextField) -> Bool {
+        textField.resignFirstResponder()
+        return true
     }
 }
