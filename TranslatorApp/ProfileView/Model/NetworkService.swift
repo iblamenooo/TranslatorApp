@@ -7,7 +7,6 @@
 
 import UIKit
 
-import UIKit
 
 class NetworkService {
     let urlString: String = "https://api.unsplash.com/photos/random?client_id=t7cl4cZkTOw_V9pKAUIlXlurBWpcEUPO40ItYqAQ4qY"

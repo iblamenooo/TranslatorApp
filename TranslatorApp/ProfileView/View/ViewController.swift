@@ -11,7 +11,7 @@ class ViewController: UIViewController {
     
     private let presenter = ProfilePresenter()
     
-    private lazy var output:ProfileViewOutput = presenter
+    private lazy var output: ProfileViewOutput = presenter
 
     private lazy var profileImageView: UIImageView = {
         let imgvw = UIImageView()
@@ -41,11 +41,22 @@ class ViewController: UIViewController {
     
     override func viewDidLoad() {
         super.viewDidLoad()
-        title = "DevHouse IOS"
+        navigationItem.title = "DevHouse IOS"
         presenter.input = self
+        nameTextField.delegate = self
+        userNameTextField.delegate = self
+        phoneNumberTextField.delegate = self
         view.backgroundColor = .white
         addSubviews()
         output.loadUserData()
+        
+        let tap = UITapGestureRecognizer(target: self, action: #selector(dismissKeyboard))
+        tap.cancelsTouchesInView = false // important
+        view.addGestureRecognizer(tap)
+    }
+
+    @objc func dismissKeyboard() {
+        view.endEditing(true)
     }
     
     private func addSubviews() {
@@ -90,6 +101,7 @@ class ViewController: UIViewController {
 extension ViewController: ProfileViewInput {
     func updateImage(image: UIImage) {
         profileImageView.image = image
+        
     }
     
     func updateFields(name: String, username: String, phone: String) {

@@ -12,7 +12,7 @@ protocol CustomTextFieldProtocol: AnyObject {
 }
 
 class CustomTextField: UIView {
-    weak var delegate: CustomTextFieldProtocol?
+    weak var delegate: CustomTextFieldProtocol? // = ViewController
     private let label:UILabel = {
         let label = UILabel()
         label.textColor = .black

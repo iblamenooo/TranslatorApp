@@ -8,7 +8,7 @@
 import UIKit
 
 class ProfilePresenter: ProfileViewOutput {
-    weak var input: ProfileViewInput?
+    weak var input: ProfileViewInput? // ViewController
     private let networkService = NetworkService()
     private let nameKey = "saved_name"
     private let userKey = "saved_username"

@@ -1,0 +1,11 @@
+//
+//  TranslatorViewInput.swift
+//  TranslatorApp
+//
+//  Created by Nurtore on 24.01.2026.
+//
+import UIKit
+
+protocol TranslatorViewInput: AnyObject {
+    func updateBookmark(isSelected: Bool)
+}
