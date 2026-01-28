@@ -7,5 +7,5 @@
 import UIKit
 
 protocol TranslatorViewInput: AnyObject {
-    func updateBookmark(isSelected: Bool)
+    func showTranslation(_ translation: String)
 }

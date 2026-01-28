@@ -8,5 +8,5 @@
 import Foundation
 
 protocol TranslatorViewOutput {
-    func bookmarkTapped()
+    func inputTextDidChange(_ text:String)
 }

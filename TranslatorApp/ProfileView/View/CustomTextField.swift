@@ -7,12 +7,12 @@
 
 import UIKit
 
-protocol CustomTextFieldProtocol: AnyObject {
+protocol CustomTextFieldDelegate: AnyObject {
     func saveTextForField(text: String, field: String)
 }
 
 class CustomTextField: UIView {
-    weak var delegate: CustomTextFieldProtocol? // = ViewController
+    weak var delegate: CustomTextFieldDelegate? // = ViewController
     private let label:UILabel = {
         let label = UILabel()
         label.textColor = .black

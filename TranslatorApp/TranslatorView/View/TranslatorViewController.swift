@@ -7,7 +7,6 @@
 import UIKit
 
 class TranslatorViewController: UIViewController{
-    
     private let presenter = TranslatorViewPresenter()
     
     private lazy var output:TranslatorViewOutput = presenter
@@ -28,6 +27,7 @@ class TranslatorViewController: UIViewController{
     override func viewDidLoad() {
         super.viewDidLoad()
         inputBox.delegate = self
+        presenter.input = self
         navigationItem.title = "DevHouse IOS"
         setupUI()
         let tap = UITapGestureRecognizer(target: self, action: #selector(dismissKeyboard))
@@ -57,12 +57,14 @@ class TranslatorViewController: UIViewController{
     }
 }
 
-extension TranslatorViewController: CustomInputBoxDelegate {
-    func bookmarkButtonTapped() {
-        output.bookmarkTapped()
-    }
-    
+extension TranslatorViewController: CustomInputBoxDelegate {    
     func saveTextForField(text: String) {
+        output.inputTextDidChange(text)
+    }
+}
+
+extension TranslatorViewController: TranslatorViewInput {
+    func showTranslation(_ text: String) {
         outputBox.updateText(text)
     }
 }

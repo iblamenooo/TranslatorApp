@@ -111,7 +111,7 @@ extension ViewController: ProfileViewInput {
     }
 }
 
-extension ViewController: CustomTextFieldProtocol {
+extension ViewController: CustomTextFieldDelegate {
     func saveTextForField(text: String, field: String) {
         output.saveUserData(text: text, field: field)
     }

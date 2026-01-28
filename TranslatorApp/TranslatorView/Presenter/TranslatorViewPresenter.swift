@@ -7,11 +7,27 @@
 
 import UIKit
 
-final class TranslatorViewPresenter: TranslatorViewOutput {
+class TranslatorViewPresenter: TranslatorViewOutput {
     weak var input: TranslatorViewInput?
-
-    func bookmarkTapped() {
-        
+    private let translateNetworkService = TranslatorNetworkService()
+    
+    private var currentText: String = ""
+    private var targetLanguage: String = "ru"
+    
+    func translateWords() {
+        let text = currentText
+        translateNetworkService.translateLogic(message: text, language: targetLanguage) { [weak self] translated in
+            guard let self else { return }
+            DispatchQueue.main.async {
+                self.input?.showTranslation(translated ?? "Error")
+            }
+            guard !text.isEmpty else { return }
+        }
+    }
+    
+    func inputTextDidChange(_ text: String) {
+        currentText = text
+        translateWords()
     }
 }
 

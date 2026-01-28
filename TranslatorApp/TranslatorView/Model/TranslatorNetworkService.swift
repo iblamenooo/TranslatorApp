@@ -7,9 +7,24 @@
 
 import UIKit
 
-
-
 class TranslatorNetworkService {
-    let googleApi = "AIzaSyCYVRfnug-DBH6pC5th0IeHmXTi2pQ9ROk"
-    let urlString = "https://translation.googleapis.com/language/translate/v2?key=AIzaSyDUMMY_EXAMPLE_KEY_123456&q=Hello&target=fr"
+   
+    func translateLogic(message:String, language:String,completion: @escaping (String?) -> Void) {
+        let googleApi = "AIzaSyA6LXpVqzH5iO8SEluTOhVlflwuca_7ONY"
+        
+        let urlString = "https://translation.googleapis.com/language/translate/v2?key=\(googleApi)&q=\(message)&target=\(language)"
+            guard let url = URL(string: urlString) else { return}
+            
+            URLSession.shared.dataTask(with: url) { data, _, error in
+                guard error == nil, let data = data else { return }
+                do {
+                    let decoded = try JSONDecoder().decode(TranslateResponse.self, from: data)
+                    let translatedText = decoded.data.translations.first?.translatedText
+                    completion(translatedText)
+                }catch {
+                    print("Decoding error:", error.localizedDescription)
+                    completion(nil)
+                }
+            }.resume()
+    }
 }

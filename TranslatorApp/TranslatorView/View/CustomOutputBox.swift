@@ -8,7 +8,6 @@
 import UIKit
 
 class CustomOutputBox: UIView {
-
     private let outputTextView: UITextView = {
         let tv = UITextView()
         tv.textColor = .black
@@ -49,7 +48,6 @@ class CustomOutputBox: UIView {
         addSubview(languageLabel)
         addSubview(outputTextView)
         
-        
         NSLayoutConstraint.activate([
             languageLabel.leadingAnchor.constraint(equalTo: leadingAnchor, constant: 16),
             languageLabel.topAnchor.constraint(equalTo: topAnchor, constant: 16),
@@ -60,5 +58,4 @@ class CustomOutputBox: UIView {
             outputTextView.trailingAnchor.constraint(equalTo: trailingAnchor, constant: -20),
         ])
     }
-    
 }

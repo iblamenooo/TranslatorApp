@@ -8,8 +8,8 @@ import UIKit
 
 protocol CustomInputBoxDelegate: AnyObject {
     func saveTextForField(text: String)
-    func bookmarkButtonTapped()
 }
+
 class CustomInputBox: UIView {
     
     weak var delegate: CustomInputBoxDelegate?
@@ -39,7 +39,6 @@ class CustomInputBox: UIView {
         let image = UIImage(systemName: "bookmark")
         button.setImage(image, for: .normal)
         button.tintColor = .label
-        button.addTarget(self, action: #selector(bookmarkButtonTapped), for: .touchUpInside)
         return button
     }()
     
@@ -48,13 +47,9 @@ class CustomInputBox: UIView {
         inputTextView.delegate = self
         setupUI()
     }
+    
     required init?(coder: NSCoder) {
         fatalError("init(coder:) has not been implemented")
-    }
-    
-    @objc private func bookmarkButtonTapped() {
-        print("Bookmark Button Tapped")
-        delegate?.bookmarkButtonTapped()
     }
     
     func setupUI() {
@@ -79,7 +74,6 @@ class CustomInputBox: UIView {
             inputTextView.trailingAnchor.constraint(equalTo: trailingAnchor, constant: -20),
         ])
     }
-    
 }
 
 extension CustomInputBox: UITextViewDelegate {
