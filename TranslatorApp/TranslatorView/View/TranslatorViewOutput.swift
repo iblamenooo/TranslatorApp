@@ -9,4 +9,6 @@ import Foundation
 
 protocol TranslatorViewOutput {
     func inputTextDidChange(_ text:String)
+    func changeTranslationLanguage(language: String)
+    func changeSourceLanguage(language: String)
 }

@@ -8,11 +8,10 @@
 import UIKit
 
 class TranslatorNetworkService {
-   
-    func translateLogic(message:String, language:String,completion: @escaping (String?) -> Void) {
-        let googleApi = "AIzaSyA6LXpVqzH5iO8SEluTOhVlflwuca_7ONY"
+    func translateLogic(message:String, language:String,source:String, completion: @escaping (String?) -> Void) {
+        let googleApi = "AIzaSyA6LXpVqzH5iO8SEluTOhVlflwuca_7ONYblablablablebleDELETE"
         
-        let urlString = "https://translation.googleapis.com/language/translate/v2?key=\(googleApi)&q=\(message)&target=\(language)"
+        let urlString = "https://translation.googleapis.com/language/translate/v2?key=\(googleApi)&q=\(message)&target=\(language)&source=\(source)"
             guard let url = URL(string: urlString) else { return}
             
             URLSession.shared.dataTask(with: url) { data, _, error in
@@ -28,3 +27,6 @@ class TranslatorNetworkService {
             }.resume()
     }
 }
+
+
+

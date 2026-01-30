@@ -23,10 +23,11 @@ class TranslatorViewController: UIViewController{
         stack.translatesAutoresizingMaskIntoConstraints = false
         return stack
     }()
-
+    
     override func viewDidLoad() {
         super.viewDidLoad()
         inputBox.delegate = self
+        outputBox.delegate = self
         presenter.input = self
         navigationItem.title = "DevHouse IOS"
         setupUI()
@@ -38,7 +39,7 @@ class TranslatorViewController: UIViewController{
     @objc func dismissKeyboard() {
         view.endEditing(true)
     }
-
+    
     private func setupUI() {
         view.addSubview(stackView)
         stackView.addArrangedSubview(inputBox)
@@ -47,19 +48,28 @@ class TranslatorViewController: UIViewController{
         NSLayoutConstraint.activate([
             stackView.topAnchor.constraint(equalTo: view.safeAreaLayoutGuide.topAnchor, constant: 20),
             stackView.centerXAnchor.constraint(equalTo: view.centerXAnchor),
-
+            
             inputBox.widthAnchor.constraint(equalToConstant: 364),
             inputBox.heightAnchor.constraint(equalToConstant: 200),
-
+            
             outputBox.widthAnchor.constraint(equalToConstant: 364),
             outputBox.heightAnchor.constraint(equalToConstant: 200)
         ])
     }
 }
 
-extension TranslatorViewController: CustomInputBoxDelegate {    
+extension TranslatorViewController: CustomInputBoxDelegate {
+    func sourceLanguage(language: String) {
+        output.changeSourceLanguage(language: language)
+    }
     func saveTextForField(text: String) {
         output.inputTextDidChange(text)
+    }
+}
+
+extension TranslatorViewController: CustomOutputBoxDelegate {
+    func languageDidChange(language: String) {
+        output.changeTranslationLanguage(language: language)
     }
 }
 
