@@ -8,4 +8,5 @@ import UIKit
 
 protocol TranslatorViewInput: AnyObject {
     func showTranslation(_ translation: String)
+    func reloadTableView()
 }

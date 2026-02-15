@@ -6,7 +6,6 @@
 //
 import Foundation
 
-
 struct TranslateResponse: Decodable {
     let data: TranslateData
 }

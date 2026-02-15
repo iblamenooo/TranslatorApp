@@ -9,6 +9,7 @@ import UIKit
 protocol CustomInputBoxDelegate: AnyObject {
     func saveTextForField(text: String)
     func sourceLanguage(language:String)
+    func didTapFavorite()
 }
 
 class CustomInputBox: UIView {
@@ -41,16 +42,6 @@ class CustomInputBox: UIView {
         btn.showsMenuAsPrimaryAction = true
         return btn
     }()
-    
-  let engAction = UIAction(title: "English (USA)") { _ in
-        print("English tapped")
-    }
-    let rusAction = UIAction(title: "Russian (Russia)") { _ in
-        print("Russian tapped")
-    }
-    let franceAction = UIAction(title: "France (France)") { _ in
-        print("France tapped")
-    }
 
     private let languageButton: UIButton = {
         let button = UIButton(type: .system)
@@ -66,8 +57,10 @@ class CustomInputBox: UIView {
         let image = UIImage(systemName: "bookmark")
         button.setImage(image, for: .normal)
         button.tintColor = .label
+        button.addTarget(self, action: #selector(favoriteTapped), for: .touchUpInside)
         return button
     }()
+    
     
     private func configureMenu() {
         let engAction = UIAction(title: "English (USA)") { [weak self] _ in
@@ -99,6 +92,17 @@ class CustomInputBox: UIView {
     
     required init?(coder: NSCoder) {
         fatalError("init(coder:) has not been implemented")
+    }
+    
+    func updateOriginalText(_ text: String) {
+        inputTextView.text = text
+    }
+    func updateSourceLanguage(_ language:String) {
+        languageLabel.text = language
+    }
+    
+    @objc private func favoriteTapped() {
+        delegate?.didTapFavorite()
     }
     
     func setupUI() {
@@ -134,4 +138,8 @@ extension CustomInputBox: UITextViewDelegate {
         delegate?.saveTextForField(text: textView.text ?? "")
     }
 }
+
+
+
+//enum
 

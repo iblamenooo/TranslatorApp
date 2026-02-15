@@ -42,19 +42,6 @@ class CustomOutputBox: UIView {
         return btn
     }()
     
-  let engAction = UIAction(title: "English (USA)") { _ in
-        print("English tapped")
-      
-    }
-    let rusAction = UIAction(title: "Russian (Russia)") { _ in
-        print("Russian tapped")
-        
-    }
-    let franceAction = UIAction(title: "France (France)") { _ in
-        print("France tapped")
-        
-    }
-    
     private func configureMenu() {
         let engAction = UIAction(title: "English (USA)") { [weak self] _ in
             self?.languageLabel.text = "English (USA)"
@@ -86,8 +73,11 @@ class CustomOutputBox: UIView {
         fatalError("init(coder:) has not been implemented")
     }
     
-    func updateText(_ text: String) {
+    func updateTranslatedText(_ text: String) {
         outputTextView.text = text
+    }
+    func updateTranslatedLanguage(_ language:String) {
+        languageLabel.text = language
     }
     
     func setupUI() {
