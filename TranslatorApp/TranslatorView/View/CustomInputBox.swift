@@ -8,7 +8,7 @@ import UIKit
 
 protocol CustomInputBoxDelegate: AnyObject {
     func saveTextForField(text: String)
-    func sourceLanguage(language:String)
+    func sourceLanguage(language:Language)
     func didTapFavorite()
 }
 
@@ -63,24 +63,14 @@ class CustomInputBox: UIView {
     
     
     private func configureMenu() {
-        let engAction = UIAction(title: "English (USA)") { [weak self] _ in
-            self?.languageLabel.text = "English (USA)"
-            print("English tapped")
-            self?.delegate?.sourceLanguage(language: "English (USA)")
+        let actions = Language.allCases.map { lang in
+            UIAction(title: lang.title) { [weak self] _ in
+                self?.languageLabel.text = lang.title
+                // Передаем объект enum напрямую в делегат
+                self?.delegate?.sourceLanguage(language: lang)
+            }
         }
-        
-        let rusAction = UIAction(title: "Russian (Russia)") { [weak self] _ in
-            self?.languageLabel.text = "Russian (Russia)"
-            print("Russian tapped")
-            self?.delegate?.sourceLanguage(language: "Russian (Russia)")
-        }
-        
-        let franceAction = UIAction(title: "France (France)") { [weak self] _ in
-            self?.languageLabel.text = "France (France)"
-            print("France tapped")
-            self?.delegate?.sourceLanguage(language: "France (France)")
-        }
-        btnMenu.menu = UIMenu(title: "Languages", children: [engAction, rusAction, franceAction])
+        btnMenu.menu = UIMenu(title: "Languages", children: actions)
     }
     
     init() {
@@ -97,8 +87,9 @@ class CustomInputBox: UIView {
     func updateOriginalText(_ text: String) {
         inputTextView.text = text
     }
-    func updateSourceLanguage(_ language:String) {
-        languageLabel.text = language
+    
+    func updateSourceLanguage(_ language:Language) {
+        languageLabel.text = language.title
     }
     
     @objc private func favoriteTapped() {

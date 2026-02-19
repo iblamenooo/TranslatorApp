@@ -81,7 +81,7 @@ extension TranslatorViewController: CustomInputBoxDelegate {
     func didTapFavorite() {
         output.addToFavorites()
     }
-    func sourceLanguage(language: String) {
+    func sourceLanguage(language: Language) {
         output.changeSourceLanguage(language: language)
     }
     func saveTextForField(text: String) {
@@ -90,7 +90,7 @@ extension TranslatorViewController: CustomInputBoxDelegate {
 }
 
 extension TranslatorViewController: CustomOutputBoxDelegate {
-    func languageDidChange(language: String) {
+    func languageDidChange(language: Language) {
         output.changeTranslationLanguage(language: language)
     }
 }

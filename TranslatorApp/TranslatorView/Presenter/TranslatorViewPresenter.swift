@@ -7,9 +7,23 @@
 
 import UIKit
 
+enum Language: String, CaseIterable {
+    case en
+    case ru
+    case fr
+    
+    var title: String {
+        switch self {
+            case .en: return "English (USA)"
+            case .ru: return "Russian (Russia)"
+            case .fr: return "France (France)"
+        }
+    }
+}
+
 struct FavoritesTranslation  {
-    let sourceLang:String
-    let targetedLang:String
+    let sourceLang:Language
+    let targetedLang:Language
     let originalText:String
     let translatedText:String
 }
@@ -32,8 +46,8 @@ class TranslatorViewPresenter: TranslatorViewOutput {
     private let translateNetworkService = TranslatorNetworkService()
     
     private var currentText: String = ""
-    private var sourceLanguage: String = "en"
-    private var targetLanguage: String = "ru"
+    private var sourceLanguage: Language = .en
+    private var targetLanguage: Language = .ru
     
     func translateWords() {
         let text = currentText
@@ -41,7 +55,7 @@ class TranslatorViewPresenter: TranslatorViewOutput {
             self.input?.showTranslation(text)
             return
         }
-        translateNetworkService.translateLogic(message: text, language: targetLanguage, source:sourceLanguage) { [weak self] translated in
+        translateNetworkService.translateLogic(message: text, language: targetLanguage.rawValue, source:sourceLanguage.rawValue) { [weak self] translated in
             guard let self else { return }
             DispatchQueue.main.async {
                 let result = translated ?? "Error"
@@ -58,38 +72,26 @@ class TranslatorViewPresenter: TranslatorViewOutput {
     }
     //MArk - addFavorites logic
     func addToFavorites() {
-        print("AddRo")
         guard !lastTranslatedText.isEmpty else { return }
-        let newFavorite = FavoritesTranslation(sourceLang: sourceLanguage,targetedLang: targetLanguage,originalText:currentText, translatedText: lastTranslatedText)
+        let newFavorite = FavoritesTranslation(
+            sourceLang: sourceLanguage,
+            targetedLang: targetLanguage,
+            originalText:currentText,
+            translatedText: lastTranslatedText
+        )
         print("addTofavorites")
         favorites.insert(newFavorite, at: 0)
         input?.reloadTableView()
     }
     
-    func changeTranslationLanguage(language: String) {
-        if language == "English (USA)" {
-            targetLanguage = "en"
-        } else if language == "Russian (Russia)" {
-            targetLanguage = "ru"
-        } else if language == "France (France)" {
-            targetLanguage = "fr"
-        }
-        if !currentText.isEmpty {
-            translateWords()
-        }
+    func changeTranslationLanguage(language lang: Language) {
+        targetLanguage = lang
+        if !currentText.isEmpty { translateWords() }
     }
     
-    func changeSourceLanguage(language: String) {
-        if language == "English (USA)" {
-            sourceLanguage = "en"
-        } else if language == "Russian (Russia)" {
-            sourceLanguage = "ru"
-        } else if language == "France (France)" {
-            sourceLanguage = "fr"
-        }
-        if !currentText.isEmpty {
-            translateWords()
-        }
+    func changeSourceLanguage(language lang: Language) {
+        sourceLanguage = lang
+        if !currentText.isEmpty { translateWords() }
     }
 }
 

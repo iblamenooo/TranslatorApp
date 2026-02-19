@@ -52,7 +52,7 @@ class CustomCell: UITableViewCell {
     func showText(original:String,translated:String) {
         translatedLabel.text = "\(original) → \(translated)"
     }
-    func showLanguages(sourceLanguage:String, targetedLanguage:String) {
+    func showLanguages(sourceLanguage:Language, targetedLanguage:Language) {
         languagesLabel.text = "\(sourceLanguage) → \(targetedLanguage)"
     }
 }

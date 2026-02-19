@@ -8,7 +8,7 @@
 import UIKit
 
 protocol CustomOutputBoxDelegate:AnyObject {
-    func languageDidChange(language:String)
+    func languageDidChange(language:Language)
 }
 
 class CustomOutputBox: UIView {
@@ -43,25 +43,16 @@ class CustomOutputBox: UIView {
     }()
     
     private func configureMenu() {
-        let engAction = UIAction(title: "English (USA)") { [weak self] _ in
-            self?.languageLabel.text = "English (USA)"
-            print("English tapped")
-            self?.delegate?.languageDidChange(language: "English (USA)")
+        let actions = Language.allCases.map { lang in
+            UIAction(title: lang.title) { [weak self] _ in
+                self?.languageLabel.text = lang.title
+                // Передаем объект enum напрямую в делегат
+                self?.delegate?.languageDidChange(language: lang)
+            }
         }
-        
-        let rusAction = UIAction(title: "Russian (Russia)") { [weak self] _ in
-            self?.languageLabel.text = "Russian (Russia)"
-            print("Russian tapped")
-            self?.delegate?.languageDidChange(language: "Russian (Russia)")
-        }
-        
-        let franceAction = UIAction(title: "France (France)") { [weak self] _ in
-            self?.languageLabel.text = "France (France)"
-            print("France tapped")
-            self?.delegate?.languageDidChange(language: "France (France)")
-        }
-        btnMenu.menu = UIMenu(title: "Languages", children: [engAction, rusAction, franceAction])
+        btnMenu.menu = UIMenu(title: "Languages", children: actions)
     }
+    
     
     init() {
         super.init(frame: .zero)
@@ -76,8 +67,8 @@ class CustomOutputBox: UIView {
     func updateTranslatedText(_ text: String) {
         outputTextView.text = text
     }
-    func updateTranslatedLanguage(_ language:String) {
-        languageLabel.text = language
+    func updateTranslatedLanguage(_ language:Language) {
+        languageLabel.text = language.title
     }
     
     func setupUI() {
