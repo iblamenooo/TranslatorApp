@@ -141,7 +141,4 @@ extension TranslatorViewController: UITableViewDelegate {
     }
 }
 
-
-
-
 //custimtableview cell: is done, button to return text to box is done, return language also is partly done but with some bugs that can only changed by enum
