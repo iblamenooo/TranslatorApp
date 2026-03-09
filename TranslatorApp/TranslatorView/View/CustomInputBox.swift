@@ -94,7 +94,19 @@ class CustomInputBox: UIView {
     
     @objc private func favoriteTapped() {
         delegate?.didTapFavorite()
+
     }
+    
+    func updateFavoriteButton(isFavorite: Bool) {
+
+        let imageName = isFavorite ? "bookmark.fill" : "bookmark"
+
+        bookmarkButton.setImage(
+            UIImage(systemName: imageName),
+            for: .normal
+        )
+    }
+    
     
     func setupUI() {
         translatesAutoresizingMaskIntoConstraints = false
@@ -132,5 +144,4 @@ extension CustomInputBox: UITextViewDelegate {
 
 
 
-//enum
 

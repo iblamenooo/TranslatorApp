@@ -12,6 +12,8 @@ protocol TranslatorViewOutput {
     func changeTranslationLanguage(language: Language)
     func changeSourceLanguage(language: Language)
     func addToFavorites()
+    func deleteFavorite(at index:Int)
     func getFavoriteCount()->Int
     func getFavorite(index:Int)->FavoritesTranslation
+    func didSelectFavorite(_ item: FavoritesTranslation)
 }

@@ -20,6 +20,7 @@ class CustomOutputBox: UIView {
         tv.backgroundColor = .clear
         tv.font = .systemFont(ofSize: 20, weight: .regular)
         tv.textAlignment = .left
+        tv.isEditable = false
         tv.translatesAutoresizingMaskIntoConstraints = false
         return tv
     }()

@@ -42,7 +42,7 @@ class TranslatorViewController: UIViewController{
         navigationItem.title = "DevHouse IOS"
         setupUI()
         let tap = UITapGestureRecognizer(target: self, action: #selector(dismissKeyboard))
-        tap.cancelsTouchesInView = false // important
+        tap.cancelsTouchesInView = false
         view.addGestureRecognizer(tap)
 
     }
@@ -50,6 +50,8 @@ class TranslatorViewController: UIViewController{
     @objc func dismissKeyboard() {
         view.endEditing(true)
     }
+    
+    
     
     private func setupUI() {
         view.addSubview(stackView)
@@ -96,6 +98,11 @@ extension TranslatorViewController: CustomOutputBoxDelegate {
 }
 
 extension TranslatorViewController: TranslatorViewInput {
+
+    func updateFavoriteButton(isFavorite: Bool) {
+        inputBox.updateFavoriteButton(isFavorite: isFavorite)
+    }
+    
     func reloadTableView() {
         tableView.reloadData()
     }
@@ -130,15 +137,24 @@ extension TranslatorViewController: UITableViewDelegate {
 
     func tableView(_ tableView: UITableView, didSelectRowAt indexPath: IndexPath) {
         let item = output.getFavorite(index: indexPath.row)
+        
+        output.didSelectFavorite(item)
 
         inputBox.updateOriginalText(item.originalText)
         inputBox.updateSourceLanguage(item.sourceLang)
+            
         outputBox.updateTranslatedText(item.translatedText)
         outputBox.updateTranslatedLanguage(item.targetedLang)
+    }
+    
+    func tableView(_ tableView: UITableView, trailingSwipeActionsConfigurationForRowAt indexPath: IndexPath) -> UISwipeActionsConfiguration? {
+        let deleteAction = UIContextualAction(style: .destructive, title: "Delete") { _, _, completion in
+            
+            self.output.deleteFavorite(at: indexPath.row)
+            completion(true)
+        }
 
-//        // optional: deselect animation
-//        tableView.deselectRow(at: indexPath, animated: true)
+            return UISwipeActionsConfiguration(actions: [deleteAction])
     }
 }
 
-//custimtableview cell: is done, button to return text to box is done, return language also is partly done but with some bugs that can only changed by enum

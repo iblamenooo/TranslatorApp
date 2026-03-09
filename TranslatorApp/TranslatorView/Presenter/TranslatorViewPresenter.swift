@@ -37,7 +37,7 @@ class TranslatorViewPresenter: TranslatorViewOutput {
         favorites[index]
     }
     
-    var favorites:[FavoritesTranslation] = []   //where it all stores
+    var favorites:[FavoritesTranslation] = []   
     
     private var lastTranslatedText: String = ""
     
@@ -62,26 +62,37 @@ class TranslatorViewPresenter: TranslatorViewOutput {
                 self.lastTranslatedText = result
                 self.input?.showTranslation(translated ?? "Error")
             }
-            guard text.isEmpty else { return }
+            guard !text.isEmpty else { return }
         }
     }
     
     func inputTextDidChange(_ text: String) {
         currentText = text
         translateWords()
+        input?.updateFavoriteButton(isFavorite: isFavorite())
     }
-    //MArk - addFavorites logic
+
     func addToFavorites() {
         guard !lastTranslatedText.isEmpty else { return }
+        
         let newFavorite = FavoritesTranslation(
             sourceLang: sourceLanguage,
             targetedLang: targetLanguage,
             originalText:currentText,
             translatedText: lastTranslatedText
         )
-        print("addTofavorites")
+        
+        let alreadyExists = favorites.contains {
+            $0.originalText == currentText &&
+            $0.translatedText == lastTranslatedText
+        }
+
+        guard !alreadyExists else { return }
+        
         favorites.insert(newFavorite, at: 0)
         input?.reloadTableView()
+        
+        input?.updateFavoriteButton(isFavorite: true)
     }
     
     func changeTranslationLanguage(language lang: Language) {
@@ -93,6 +104,30 @@ class TranslatorViewPresenter: TranslatorViewOutput {
         sourceLanguage = lang
         if !currentText.isEmpty { translateWords() }
     }
+    
+    func deleteFavorite(at index: Int) {
+        favorites.remove(at: index)
+        input?.reloadTableView()
+    }
+    
+    func isFavorite() -> Bool {
+        return favorites.contains {
+            $0.originalText == currentText &&
+            $0.translatedText == lastTranslatedText
+        }
+    }
+    func didSelectFavorite(_ item: FavoritesTranslation) {
+        // Sync internal state with the selected favorite
+        self.currentText = item.originalText
+        self.lastTranslatedText = item.translatedText
+        self.sourceLanguage = item.sourceLang
+        self.targetLanguage = item.targetedLang
+        
+        // Update the bookmark icon state immediately
+        input?.updateFavoriteButton(isFavorite: true)
+    }
+    
+    
 }
 
-//enum
+
