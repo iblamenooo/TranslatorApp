@@ -112,7 +112,7 @@ extension TranslatorViewController: TranslatorViewInput {
     }
 }
 
-extension TranslatorViewController: UITableViewDataSource {
+extension TranslatorViewController: UITableViewDataSource, UITableViewDelegate {
     func tableView(_ tableView: UITableView, numberOfRowsInSection section: Int) -> Int {
         output.getFavoriteCount()
     }
@@ -131,20 +131,25 @@ extension TranslatorViewController: UITableViewDataSource {
         
         return cell
     }
-}
-
-extension TranslatorViewController: UITableViewDelegate {
-
+    
     func tableView(_ tableView: UITableView, didSelectRowAt indexPath: IndexPath) {
         let item = output.getFavorite(index: indexPath.row)
         
-        output.didSelectFavorite(item)
-
-        inputBox.updateOriginalText(item.originalText)
-        inputBox.updateSourceLanguage(item.sourceLang)
+//        output.didSelectFavorite(item)
+//
+//        inputBox.updateOriginalText(item.originalText)
+//        inputBox.updateSourceLanguage(item.sourceLang)
+//            
+//        outputBox.updateTranslatedText(item.translatedText)
+//        outputBox.updateTranslatedLanguage(item.targetedLang)
+        
+            output.didSelectFavorite(item)
             
-        outputBox.updateTranslatedText(item.translatedText)
-        outputBox.updateTranslatedLanguage(item.targetedLang)
+            // 2. Update UI Components
+            inputBox.updateOriginalText(item.originalText)
+            inputBox.updateSourceLanguage(item.sourceLang)
+            outputBox.updateTranslatedText(item.translatedText)
+            outputBox.updateTranslatedLanguage(item.targetedLang)
     }
     
     func tableView(_ tableView: UITableView, trailingSwipeActionsConfigurationForRowAt indexPath: IndexPath) -> UISwipeActionsConfiguration? {
@@ -157,4 +162,5 @@ extension TranslatorViewController: UITableViewDelegate {
             return UISwipeActionsConfiguration(actions: [deleteAction])
     }
 }
+
 

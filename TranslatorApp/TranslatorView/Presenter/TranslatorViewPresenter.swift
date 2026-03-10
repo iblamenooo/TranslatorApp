@@ -75,24 +75,29 @@ class TranslatorViewPresenter: TranslatorViewOutput {
     func addToFavorites() {
         guard !lastTranslatedText.isEmpty else { return }
         
-        let newFavorite = FavoritesTranslation(
-            sourceLang: sourceLanguage,
-            targetedLang: targetLanguage,
-            originalText:currentText,
-            translatedText: lastTranslatedText
-        )
         
-        let alreadyExists = favorites.contains {
+        let currentIndex = favorites.firstIndex {
             $0.originalText == currentText &&
-            $0.translatedText == lastTranslatedText
+            $0.translatedText == lastTranslatedText &&
+            $0.sourceLang == sourceLanguage &&
+            $0.targetedLang == targetLanguage
         }
-
-        guard !alreadyExists else { return }
         
-        favorites.insert(newFavorite, at: 0)
+        if let index = currentIndex {
+            favorites.remove(at: index)
+            input?.updateFavoriteButton(isFavorite: false)
+        } else {
+            let newFavorite = FavoritesTranslation(
+                sourceLang: sourceLanguage,
+                targetedLang: targetLanguage,
+                originalText:currentText,
+                translatedText: lastTranslatedText
+            )
+            favorites.insert(newFavorite, at: 0)
+            input?.updateFavoriteButton(isFavorite: true)
+        }
+        
         input?.reloadTableView()
-        
-        input?.updateFavoriteButton(isFavorite: true)
     }
     
     func changeTranslationLanguage(language lang: Language) {
@@ -113,17 +118,17 @@ class TranslatorViewPresenter: TranslatorViewOutput {
     func isFavorite() -> Bool {
         return favorites.contains {
             $0.originalText == currentText &&
-            $0.translatedText == lastTranslatedText
+            $0.translatedText == lastTranslatedText &&
+            $0.sourceLang == sourceLanguage &&
+            $0.targetedLang == targetLanguage
         }
     }
     func didSelectFavorite(_ item: FavoritesTranslation) {
-        // Sync internal state with the selected favorite
         self.currentText = item.originalText
         self.lastTranslatedText = item.translatedText
         self.sourceLanguage = item.sourceLang
         self.targetLanguage = item.targetedLang
-        
-        // Update the bookmark icon state immediately
+
         input?.updateFavoriteButton(isFavorite: true)
     }
     
