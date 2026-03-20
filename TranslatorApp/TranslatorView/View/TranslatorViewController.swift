@@ -5,15 +5,16 @@
 //  Created by Nurtore on 11.01.2026.
 
 import UIKit
+import Vision
 
-
-class TranslatorViewController: UIViewController{
+class TranslatorViewController: UIViewController {
     private let presenter = TranslatorViewPresenter()
     
     private lazy var output:TranslatorViewOutput = presenter
     
     private let inputBox = CustomInputBox()
     private let outputBox = CustomOutputBox()
+    private let visionService = VisionService()
     
     private let stackView: UIStackView = {
         let stack = UIStackView()
@@ -89,6 +90,29 @@ extension TranslatorViewController: CustomInputBoxDelegate {
     func saveTextForField(text: String) {
         output.inputTextDidChange(text)
     }
+    func didTapScanPhoto() {
+        let picker = UIImagePickerController()
+        picker.delegate = self
+        picker.sourceType = .photoLibrary
+        present(picker, animated: true)
+    }
+}
+
+extension TranslatorViewController: UIImagePickerControllerDelegate, UINavigationControllerDelegate {
+    func imagePickerController(_ picker: UIImagePickerController, didFinishPickingMediaWithInfo info: [UIImagePickerController.InfoKey : Any]) {
+        picker.dismiss(animated: true)
+        
+        guard let image = info[.originalImage] as? UIImage else { return }
+
+        visionService.recognizeText(from: image) { [weak self] recognizedText in
+            guard let self = self, let text = recognizedText, !text.isEmpty else { return }
+
+            DispatchQueue.main.async {
+                self.inputBox.updateOriginalText(text)
+                self.output.inputTextDidChange(text)
+            }
+        }
+    }
 }
 
 extension TranslatorViewController: CustomOutputBoxDelegate {
@@ -111,6 +135,8 @@ extension TranslatorViewController: TranslatorViewInput {
         outputBox.updateTranslatedText(text)
     }
 }
+
+
 
 extension TranslatorViewController: UITableViewDataSource, UITableViewDelegate {
     func tableView(_ tableView: UITableView, numberOfRowsInSection section: Int) -> Int {

@@ -10,6 +10,7 @@ protocol CustomInputBoxDelegate: AnyObject {
     func saveTextForField(text: String)
     func sourceLanguage(language:Language)
     func didTapFavorite()
+    func didTapScanPhoto()
 }
 
 class CustomInputBox: UIView {
@@ -60,6 +61,20 @@ class CustomInputBox: UIView {
         button.addTarget(self, action: #selector(favoriteTapped), for: .touchUpInside)
         return button
     }()
+    
+    private lazy var scanButton: UIButton = {
+        let button = UIButton(type: .system)
+        button.translatesAutoresizingMaskIntoConstraints = false
+        let image = UIImage(systemName: "camera.viewfinder") // Vision/Scanner icon
+        button.setImage(image, for: .normal)
+        button.tintColor = .label
+        button.addTarget(self, action: #selector(scanTapped), for: .touchUpInside)
+        return button
+    }()
+
+    @objc private func scanTapped() {
+        delegate?.didTapScanPhoto()
+    }
     
     
     private func configureMenu() {
@@ -116,6 +131,7 @@ class CustomInputBox: UIView {
         addSubview(languageLabel)
         addSubview(bookmarkButton)
         addSubview(inputTextView)
+        addSubview(scanButton)
         addSubview(btnMenu)
         
         NSLayoutConstraint.activate([
@@ -124,6 +140,9 @@ class CustomInputBox: UIView {
 
             bookmarkButton.trailingAnchor.constraint(equalTo: trailingAnchor, constant: -16),
             bookmarkButton.centerYAnchor.constraint(equalTo: languageLabel.centerYAnchor),
+            
+            scanButton.trailingAnchor.constraint(equalTo: bookmarkButton.leadingAnchor, constant: -16),
+            scanButton.centerYAnchor.constraint(equalTo: languageLabel.centerYAnchor),
             
             btnMenu.leadingAnchor.constraint(equalTo: languageLabel.trailingAnchor, constant: 8),
             btnMenu.centerYAnchor.constraint(equalTo: languageLabel.centerYAnchor),
