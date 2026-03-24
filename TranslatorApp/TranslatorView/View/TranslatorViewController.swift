@@ -98,7 +98,7 @@ extension TranslatorViewController: CustomInputBoxDelegate {
     }
 }
 
-extension TranslatorViewController: UIImagePickerControllerDelegate, UINavigationControllerDelegate {
+extension TranslatorViewController: UIImagePickerControllerDelegate, UINavigationControllerDelegate { 
     func imagePickerController(_ picker: UIImagePickerController, didFinishPickingMediaWithInfo info: [UIImagePickerController.InfoKey : Any]) {
         picker.dismiss(animated: true)
         
