@@ -6,7 +6,7 @@ The app allows users to translate text instantly, save favorite translations, an
 
 
 <div align="center">
-  <video src="https://github.com/user-attachments/assets/48efe6b6-e55c-4dde-a4e0-a0d70db533" controls width="300"></video>
+  <video src="https://github.com/user-attachments/assets/582ec8a0-333b-414f-aa29-5a496b5dabf2" controls width="300"></video>
 </div>
 
 
