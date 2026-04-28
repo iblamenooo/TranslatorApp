@@ -3,6 +3,19 @@
 TranslatorApp is an iOS application for real-time text translation between multiple languages.  
 The app allows users to translate text instantly, save favorite translations, and manage them locally.
 
+
+
+
+
+
+https://github.com/user-attachments/assets/48efe6b6-e55c-4dde-a4e0-a0d70db53394
+
+
+
+
+
+
+
 ## Features
 
 - Real-time text translation
