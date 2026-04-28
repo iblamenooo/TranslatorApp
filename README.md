@@ -5,13 +5,9 @@ The app allows users to translate text instantly, save favorite translations, an
 
 
 
-
-
-
-https://github.com/user-attachments/assets/48efe6b6-e55c-4dde-a4e0-a0d70db53394
-
-
-
+<div align="center">
+  <video src="[https://user-images.githubusercontent.com/your-link.mov](https://github.com/user-attachments/assets/48efe6b6-e55c-4dde-a4e0-a0d70db533)" controls width="300"></video>
+</div>
 
 
 
