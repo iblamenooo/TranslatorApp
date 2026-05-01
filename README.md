@@ -58,17 +58,6 @@ Users can save important translations and access them later.
 
 Users can manage basic preferences and app settings.
 
-## What I Learned
-
-While building this project, I improved my skills in:
-
-- Building UI programmatically with UIKit
-- Working with MVP architecture
-- Making network requests using URLSession
-- Parsing API responses
-- Saving data locally with Core Data
-- Managing app state and user preferences
-- Structuring code for maintainability
 
 ## Installation
 
